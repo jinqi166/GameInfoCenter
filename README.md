@@ -1,2 +1,3 @@
 # GameInfoCenter
-游戏资源采集服务
+GameInfoCenter\GameInfoCenter\Assets\Scripts\GameInfoCenterSDK是客户端sdk目录，用来采集并上报客户端信息。
+D:\Git\GameInfoCenter\GameInfoCenter\Tools\GameInfoWebServer是web服务端用来收集客户端上报的信息并展示到页面上。
