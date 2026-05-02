@@ -1,5 +1,18 @@
 /GameInfoCenter/Library
 /GameInfoCenter/Logs
 /GameInfoCenter/Temp
-/GameInfoCenter/Tools/GameInfoWebServer/GameInfoWebServer/bin
-/GameInfoCenter/Tools/GameInfoWebServer/GameInfoWebServer/obj
+/GameInfoCenter/UserSettings
+
+# Visual Studio / Rider
+**/bin/
+**/obj/
+**/.vs/
+*.user
+*.suo
+*.userosscache
+
+# Toolchain outputs
+/GameInfoCenter/Tools/GameInfo.Protocol/bin
+/GameInfoCenter/Tools/GameInfo.Protocol/obj
+/GameInfoCenter/Tools/GameInfo.Protocol.Tests/bin
+/GameInfoCenter/Tools/GameInfo.Protocol.Tests/obj

@@ -1,0 +1,67 @@
+@page "/live/{SessionId}"
+@rendermode InteractiveServer
+@using Microsoft.JSInterop
+@inject NavigationManager Navigation
+@inject IJSRuntime Js
+
+<PageTitle>Live capture</PageTitle>
+
+<h1>Live: @SessionId</h1>
+
+@if (string.IsNullOrEmpty(ViewerToken))
+{
+    <p class="text-warning">Missing viewer token. Open this page with <code>?token=...</code> query string.</p>
+}
+else
+{
+    <div class="row g-2 live-layout">
+        <div class="col-lg-6">
+            <h2>Game view</h2>
+            <canvas id="gameinfo-canvas" class="border bg-dark w-100" style="max-height: 70vh;"></canvas>
+        </div>
+        <div class="col-lg-3">
+            <h2>Hierarchy</h2>
+            <div id="gameinfo-hierarchy" class="border p-2 overflow-auto" style="max-height: 70vh;"></div>
+        </div>
+        <div class="col-lg-3">
+            <h2>Inspector</h2>
+            <div id="gameinfo-inspector" class="border p-2 overflow-auto" style="max-height: 70vh;"></div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string SessionId { get; set; } = string.Empty;
+
+    private string ViewerToken { get; set; } = string.Empty;
+
+    private bool _viewerStarted;
+
+    protected override void OnParametersSet()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+        if (query.TryGetValue("token", out var values))
+        {
+            ViewerToken = values.ToString();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_viewerStarted || string.IsNullOrEmpty(ViewerToken))
+        {
+            return;
+        }
+
+        _viewerStarted = true;
+        await Js.InvokeVoidAsync(
+            "startGameInfoViewer",
+            "gameinfo-canvas",
+            "gameinfo-hierarchy",
+            "gameinfo-inspector",
+            SessionId,
+            ViewerToken).ConfigureAwait(false);
+    }
+}
